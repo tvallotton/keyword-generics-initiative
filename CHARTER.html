@@ -110,10 +110,10 @@
                         <a href="print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
-                        <a href="https://github.com/rust-lang/keyword-generics" title="Git repository" aria-label="Git repository">
+                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/rust-lang/keyword-generics/edit/master/./CHARTER.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/yoshuawuyts/keyword-generics-initiative/edit/master/./CHARTER.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
                     </div>
@@ -141,21 +141,72 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="-keyword-generics-charter"><a class="header" href="#-keyword-generics-charter">📜 keyword generics Charter</a></h1>
+<p><em>Not being able to write code which is generic over keywords limits what we can
+express in Rust, and we should seek to improve that.</em></p>
 <!--
  Provide an introduction summarising the goals and motivation behind your
  initiative.
 -->
 <h2 id="proposal"><a class="header" href="#proposal">Proposal</a></h2>
-<!--
-Copy and paste the proposal into here. 
-
-Feel free to move some elements, like design questions that came up,
-into the approriate section.
--->
+<p>We're in the process of adding new features to Rust. The Const WG is creating an
+extension to Rust which enables arbitrary computation at compile time.
+While the Async WG is in the process of adding capabilities for asynchronous
+computation. We've noticed that both these efforts have a lot in common, and may
+in fact require similar solutions. This document describes a framework for
+thinking about these language features, describes their individual needs, and
+makes the case that we should be considering a generalized language design for
+&quot;keywords&quot; (aka &quot;definitely not effects&quot;), so that we can ensure that the Rust
+language and standard library remain consistent in the face of extensions.</p>
+<h2 id="a-broad-perspective-on-language-extensions"><a class="header" href="#a-broad-perspective-on-language-extensions">A broad perspective on language extensions</a></h2>
+<p><code>const fn</code> and <code>async fn</code> are similar language extensions, but the way they
+extend the language is different:</p>
+<ul>
+<li><code>const fn</code> creates a <em>subset</em> of &quot;base Rust&quot;, enabling functions to be
+executed during compilation. <code>const</code> functions can be executed in &quot;base&quot;
+contexts, while the other way around isn't possible.</li>
+<li><code>async fn</code> creates a <em>superset</em> of &quot;base Rust&quot;, enabling functions to be
+executed asynchronously. <code>async</code> types cannot be executed in &quot;base&quot; contexts
+<sup class="footnote-reference"><a href="#bridge">1</a></sup>, but &quot;base&quot; in <code>async</code> contexts <em>is</em> possible.</li>
+</ul>
+<div class="footnote-definition" id="bridge"><sup class="footnote-definition-label">1</sup>
+<p>In order to bridge async and non-async Rust, functionality such as
+<code>thread::block_on</code> or <code>async fn</code> must be used, which runs a future to completion
+from a synchronous context. <code>const</code> Rust does not require such a bridge, since
+the difference in contexts is &quot;compile time&quot; and &quot;run-time&quot;.</p>
+</div>
+<pre><code>                      +---------------------------+                               
+                      | +-----------------------+ |                               
+                      | | +-------------------+ | |     - numbers                 
+                      | | |                   | | |     - containers (soon)      
+                      | | |    const Rust     |-------{ - functions               
+                      | | |                   | | |     - control flow            
+ - networking         | | +-------------------+ | |     - traits                  
+ - filesystem         | |                       | |     - types                   
+ - threads     }--------|      &quot;base&quot; Rust      | |                               
+ - system time        | |                       | |                               
+ - statics            | +-----------------------+ |                               
+                      |                           |     - ad-hoc concurrency      
+                      |        async Rust         |---{ - ad-hoc cancellation     
+                      |                           |     - ad-hoc parking/unparking
+                      +---------------------------+
+</code></pre>
+<p>In terms of standard library these relationships also mirror each other. &quot;Base&quot;
+Rust will want to do everything during runtime what <code>const</code> rust can do, but in
+addition to that also things like network and filesystem IO. Async Rust will in
+turn want to do everything &quot;base&quot; Rust can do, but in addition to that will also
+want to introduce methods for ad-hoc concurrency, cancellation, and execution
+control. It will also want to do things which are blocking in &quot;base&quot; Rust as
+non-blocking in async Rust.</p>
+<p>And it doesn't stop with <code>const</code> and <code>async</code> Rust; it's not hard to imagine that
+other annotations for &quot;can this panic&quot;, &quot;can this return an error&quot;, &quot;can this
+yield values&quot; may want to exist as well. All of which would present extensions
+to the &quot;base&quot; Rust language, which would need to be introduced in a way which
+keeps it feeling like a single language - instead of several disjoint languages
+in a trenchcoat.</p>
 <h2 id="membership"><a class="header" href="#membership">Membership</a></h2>
 <table><thead><tr><th>Role</th><th>Github</th></tr></thead><tbody>
-<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/ghost">ghost</a></td></tr>
-<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/liaison.html">Liaison</a></td><td><a href="https://github.com/ghost">ghost</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/yoshuawuyts">Yosh Wuyts</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/oli-obk">Oli Scherer</a></td></tr>
 </tbody></table>
 
                     </main>
