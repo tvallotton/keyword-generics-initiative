@@ -75,7 +75,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="index.html">👋 Welcome</a></li><li class="chapter-item "><a href="updates.html">✏️ Updates</a></li><li class="chapter-item expanded "><a href="CHARTER.html" class="active">📜 Charter</a></li><li class="chapter-item "><a href="evaluation.html">🔬 Evaluation</a></li><li class="chapter-item "><a href="explainer.html">📚 Explainer</a></li><li class="chapter-item "><a href="RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="FAQ.html">😕 FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item "><a href="index.html">👋 Welcome</a></li><li class="chapter-item "><a href="updates/index.html">✏️ Updates</a></li><li class="chapter-item expanded "><a href="CHARTER.html" class="active">📜 Charter</a></li><li class="chapter-item "><a href="evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="evaluation/overloading-keyword-generics.html">Overloading</a></li></ol></li><li class="chapter-item "><a href="evaluation/index.html">📚 Explainer</a></li><li class="chapter-item "><a href="RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="FAQ.html">😕 FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -175,20 +175,21 @@ from a synchronous context. <code>const</code> Rust does not require such a brid
 the difference in contexts is &quot;compile time&quot; and &quot;run-time&quot;.</p>
 </div>
 <pre><code>                      +---------------------------+                               
-                      | +-----------------------+ |                               
-                      | | +-------------------+ | |     - numbers                 
-                      | | |                   | | |     - containers (soon)      
+                      | +-----------------------+ |     Compute values:
+                      | | +-------------------+ | |     - types
+                      | | |                   | | |     - numbers
                       | | |    const Rust     |-------{ - functions               
                       | | |                   | | |     - control flow            
- - networking         | | +-------------------+ | |     - traits                  
- - filesystem         | |                       | |     - types                   
- - threads     }--------|      &quot;base&quot; Rust      | |                               
- - system time        | |                       | |                               
- - statics            | +-----------------------+ |                               
-                      |                           |     - ad-hoc concurrency      
-                      |        async Rust         |---{ - ad-hoc cancellation     
-                      |                           |     - ad-hoc parking/unparking
-                      +---------------------------+
+ Access to the host:  | | +-------------------+ | |     - traits (soon)                 
+ - networking         | |                       | |     - containers (soon)
+ - filesystem  }--------|      &quot;base&quot; Rust      | |                               
+ - threads            | |                       | |                               
+ - system time        | +-----------------------+ |     
+                      |                           |     Control over execution:      
+                      |         async Rust        |---{ - ad-hoc concurrency      
+                      |                           |     - ad-hoc cancellation     
+                      +---------------------------+     - ad-hoc pausing/resumption
+
 </code></pre>
 <p>In terms of standard library these relationships also mirror each other. &quot;Base&quot;
 Rust will want to do everything during runtime what <code>const</code> rust can do, but in
@@ -207,16 +208,17 @@ in a trenchcoat.</p>
 <table><thead><tr><th>Role</th><th>Github</th></tr></thead><tbody>
 <tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/yoshuawuyts">Yosh Wuyts</a></td></tr>
 <tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/oli-obk">Oli Scherer</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/liaison.html">Liaison</a></td><td><a href="https://github.com/nikomatsakis">Niko Matsakis?</a></td></tr>
 </tbody></table>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="updates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="updates/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
-                            <a rel="next" href="evaluation.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="evaluation/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         <div style="clear: both"></div>
@@ -225,10 +227,10 @@ in a trenchcoat.</p>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="updates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="updates/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
-                    <a rel="next" href="evaluation.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="evaluation/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

@@ -76,7 +76,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="index.html">👋 Welcome</a></li><li class="chapter-item "><a href="updates.html">✏️ Updates</a></li><li class="chapter-item "><a href="CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="evaluation.html">🔬 Evaluation</a></li><li class="chapter-item "><a href="explainer.html">📚 Explainer</a></li><li class="chapter-item "><a href="RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="FAQ.html">😕 FAQ</a></li></ol>
+                <ol class="chapter"><li class="chapter-item "><a href="index.html">👋 Welcome</a></li><li class="chapter-item "><a href="updates/index.html">✏️ Updates</a></li><li class="chapter-item "><a href="CHARTER.html">📜 Charter</a></li><li class="chapter-item "><a href="evaluation/index.html">🔬 Evaluation</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="evaluation/effect-hierarchy.html">Effect hierarchy</a></li><li class="chapter-item "><a href="evaluation/grouping-keyword-generics.html">Grouping keyword generics</a></li><li class="chapter-item "><a href="evaluation/introducing-new-keyword-generics.html">Introducing new keyword generics</a></li><li class="chapter-item "><a href="evaluation/mir-desugaring.html">MIR desugaring</a></li><li class="chapter-item "><a href="evaluation/overloading-keyword-generics.html">Overloading</a></li></ol></li><li class="chapter-item "><a href="evaluation/index.html">📚 Explainer</a></li><li class="chapter-item "><a href="RFC.html">✨ RFC</a></li><li class="chapter-item "><a href="FAQ.html">😕 FAQ</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -208,6 +208,16 @@ following command.</p>
 <pre><code>mdbook serve
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-updates"><a class="header" href="#-updates">✏️ Updates</a></h1>
+<p>Lang-team initiatives give monthly updates. This section collects the updates from this initiative for posterity.</p>
+<p>To add a new update:</p>
+<ul>
+<li>Create a new file <code>updates/YYYY-mmm.md</code>, e.g. <code>updates/2021-nov.md</code>
+<ul>
+<li>We recomend basing this on the <a href="https://github.com/rust-lang/initiative-template/tree/master/updates/template.md">update template</a></li>
+</ul>
+</li>
+<li>Link it from the <code>SUMMARY.md</code></li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-keyword-generics-charter"><a class="header" href="#-keyword-generics-charter">📜 keyword generics Charter</a></h1>
 <p><em>Not being able to write code which is generic over keywords limits what we can
 express in Rust, and we should seek to improve that.</em></p>
@@ -243,20 +253,21 @@ from a synchronous context. <code>const</code> Rust does not require such a brid
 the difference in contexts is &quot;compile time&quot; and &quot;run-time&quot;.</p>
 </div>
 <pre><code>                      +---------------------------+                               
-                      | +-----------------------+ |                               
-                      | | +-------------------+ | |     - numbers                 
-                      | | |                   | | |     - containers (soon)      
+                      | +-----------------------+ |     Compute values:
+                      | | +-------------------+ | |     - types
+                      | | |                   | | |     - numbers
                       | | |    const Rust     |-------{ - functions               
                       | | |                   | | |     - control flow            
- - networking         | | +-------------------+ | |     - traits                  
- - filesystem         | |                       | |     - types                   
- - threads     }--------|      &quot;base&quot; Rust      | |                               
- - system time        | |                       | |                               
- - statics            | +-----------------------+ |                               
-                      |                           |     - ad-hoc concurrency      
-                      |        async Rust         |---{ - ad-hoc cancellation     
-                      |                           |     - ad-hoc parking/unparking
-                      +---------------------------+
+ Access to the host:  | | +-------------------+ | |     - traits (soon)                 
+ - networking         | |                       | |     - containers (soon)
+ - filesystem  }--------|      &quot;base&quot; Rust      | |                               
+ - threads            | |                       | |                               
+ - system time        | +-----------------------+ |     
+                      |                           |     Control over execution:      
+                      |         async Rust        |---{ - ad-hoc concurrency      
+                      |                           |     - ad-hoc cancellation     
+                      +---------------------------+     - ad-hoc pausing/resumption
+
 </code></pre>
 <p>In terms of standard library these relationships also mirror each other. &quot;Base&quot;
 Rust will want to do everything during runtime what <code>const</code> rust can do, but in
@@ -275,9 +286,383 @@ in a trenchcoat.</p>
 <table><thead><tr><th>Role</th><th>Github</th></tr></thead><tbody>
 <tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/yoshuawuyts">Yosh Wuyts</a></td></tr>
 <tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/oli-obk">Oli Scherer</a></td></tr>
+<tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/liaison.html">Liaison</a></td><td><a href="https://github.com/nikomatsakis">Niko Matsakis?</a></td></tr>
 </tbody></table>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-evaluation"><a class="header" href="#-evaluation">🔬 Evaluation</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="-explainer"><a class="header" href="#-explainer">📚 Explainer</a></h1>
+<blockquote>
+<p>The <em>evaluation</em> surveys the various design approaches that are under consideration.
+It is not required for all initiatives, only those that begin with a problem statement
+but without a clear picture of the best solution. Often the evaluation will refer to topics
+in the <a href="evaluation/./design-discussions.html">design-discussions</a> for more detailed consideration.</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="implications-of-the-effect-hierarchy"><a class="header" href="#implications-of-the-effect-hierarchy">Implications of the effect hierarchy</a></h1>
+<p>One implication of the subset-superset relationship is that code which is
+generic over effects will not be able to use all functionality of the superset
+in the subset case. Though it will need to use the <em>syntax</em> of the superset.</p>
+<p>Take for examle the following code. It takes two async closures, awaits them,
+and sums them:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sum the output of two async functions:
+~async fn sum&lt;T&gt;(
+    lhs: impl ~async FnMut() -&gt; T,
+    rhs: impl ~async FnMut() -&gt; T
+) -&gt; T {
+   let lhs = lhs().await; 
+   let rhs = rhs().await; 
+   lhs + rhs
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>One of the benefits of async execution is that we gain <em>ad-hoc concurrency</em>, so
+we might be tempted to perform the comptutation of <code>lhs</code> and <code>rhs</code> concurrently,
+and summing the output once both have completed. However this should not be
+possible solely using effect polymorphism since the generated code needs to work
+in both async and non-async contexts.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sum the output of two async functions:
+~async fn sum&lt;T&gt;(
+    lhs: impl ~async FnMut() -&gt; T,
+    rhs: impl ~async FnMut() -&gt; T
+) -&gt; T {
+   let (lhs, rhs) = (lhs(), rhs()).join().await;
+   //                             ^^^^^^^
+   // error: cannot call an `async fn` from a `~async` context
+   // hint: instead of calling `join` await the items sequentially
+   //       or consider writing an overload instead
+   lhs + rhs
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>And this is not unique to <code>async</code>: in maybe-<code>const</code> contexts we cannot call
+functions from the super-context (&quot;base Rust&quot;) since those cannot work during
+<code>const</code> execution. This leads to the following implication: <strong>Conditional effect
+implementations require the syntactic annotations of the super-context, but
+cannot call functions which exclusively work in the super-context.</strong></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="grouping-keyword-generics"><a class="header" href="#grouping-keyword-generics">Grouping Keyword Generics</a></h1>
+<p>We expect it to be common that if a function takes generics and has conditional
+keywords on those, it will want to be conditional over <em>all</em> keywords on those
+generics. So in order to not have people repeat params over and over, we should
+provide shorthand syntax.</p>
+<p>Here is the &quot;base&quot; variant we're changing:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// without any effects
+fn find&lt;I&gt;(
+    iter: impl Iterator&lt;Item = I&gt;,
+    closure: impl FnMut(&amp;I) -&gt; bool,
+) -&gt; Option&lt;I&gt; {
+    ...    
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We could imagine wanting a fallible variant of this which can short-circuit
+based on whether an <code>Error</code> is returned or not. We could imagine the &quot;base&quot;
+version using a <code>TryTrait</code> notation, and the &quot;effect&quot; version using the <code>throws</code>
+keyword. Both variants would look something like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// fallible without effect notation
+fn try_find&lt;I, E&gt;(
+    iter: impl TryIterator&lt;Item = I, E&gt;,
+    closure: impl TryFnMut&lt;(&amp;I), E&gt; -&gt; bool,
+) -&gt; Result&lt;Option&lt;I&gt;, E&gt; {
+    ...
+}
+
+// fallible with effect notation
+fn try_find&lt;I, E&gt;(
+    iter: impl Iterator&lt;Item = I&gt; ~yeets E,
+    closure: impl FnMut(&amp;I) ~yeets E -&gt; bool,
+) -&gt; Option&lt;I&gt; ~yeets E {
+    ...
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>For <code>async</code> we could do something similar. The &quot;base&quot; version would use
+<code>AsyncTrait</code> variants. And the &quot;effect&quot; variant would use the <code>async</code> keyword:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// async without effect notation
+fn async_find&lt;I&gt;(
+    iter: impl AsyncIterator&lt;Item = I&gt;,
+    closure: impl AsyncFnMut(&amp;I) -&gt; bool,
+) -&gt; impl Future&lt;Output = Option&lt;I&gt;&gt; {
+    ...
+}
+
+// async with effect notation
+~async fn async_find&lt;I&gt;(
+    iter: impl ~async Iterator&lt;Item = I&gt;,
+    closure: impl ~async FnMut(&amp;I) -&gt; bool,
+) -&gt; Option&lt;I&gt; {
+    ...
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Both the &quot;fallible&quot; and &quot;async&quot; variants mirror each other closely. And it's
+easy to imagine we'd want to be conditional over both. However, if neither the
+&quot;base&quot; or the &quot;effect&quot; variants are particularly pleasant.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// async + fallible without effect notation
+fn try_async_find&lt;I, E&gt;(
+    iter: impl TryAsyncIterator&lt;Item = Result&lt;I, E&gt;&gt;,
+    closure: impl TryAsyncFnMut&lt;(&amp;I), E&gt; -&gt; bool,
+) -&gt; impl Future&lt;Output = Option&lt;Result&lt;I, E&gt;&gt;&gt; {
+    ...
+}
+
+// async + fallible with effect notation
+~async fn try async_find&lt;I, E&gt;(
+    iter: impl ~async Iterator&lt;Item = I&gt; ~yeets E,
+    closure: impl ~async FnMut(&amp;I) ~yeets E -&gt; bool,
+) -&gt; Option&lt;I&gt; ~yeets E {
+    ...
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>The &quot;base&quot; variant is entirely unworkable since it introduces a combinatorial
+explosion of effects (&quot;fallible&quot; and &quot;async&quot; are only two examples of effects).
+The &quot;effect&quot; variant is a little better because it composes, but even with just
+two effects it looks utterly overwhelming. Can you imagine what it would look
+like with three or four? Yikes.</p>
+<p>So what if we could instead treat effects as an actual generic parameter? As we
+discussed earlier, in order to lower effects we already need a new type of
+generic at the MIR layer. But what if we exposed that type of generics as user
+syntax too? We could imagine it to look something like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// conditional
+fn any_find&lt;I, effect F&gt;(
+    iter: impl F * Iterator&lt;Item = I&gt;,
+    closure: impl F * FnMut(&amp;I) -&gt; bool,
+) -&gt; F * Option&lt;I&gt; {
+    ...    
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>There are legitimate questions here though. Effects which provide a superset of
+base Rust may change the way we write Rust. The clearest example of this is
+<code>async</code>: would having an <code>effect F</code> require that we when we invoke our <code>closure</code>
+that we suffix it with <code>.await</code>? What about a <code>try</code> effect, would that require
+that we suffix it with a <code>?</code> operator? The effects passed to the function might
+need to change the way we author the function body <sup class="footnote-reference"><a href="#implication">1</a></sup>.</p>
+<div class="footnote-definition" id="implication"><sup class="footnote-definition-label">1</sup>
+<p>One interesting thing to keep in mind is that the total set of
+effects is strictly <em>bounded</em>. None of these mechanisms would be exposed to
+end-users to define their own effects, but only used by the Rust language. This
+means we can know which effects are part of the set. And any change in calling
+signature (e.g. adding <code>.await</code> or <code>?</code>, etc.) can be part of a Rust edition.</p>
+</div>
+<p>Another question is about <em>bounds</em>. Declaring an <code>effect F</code> is maximally
+inclusive: it would capture all effects. Should we be able to place restrictions
+on this effect, and if so what should that look like?</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="adding-new-keyword-generics"><a class="header" href="#adding-new-keyword-generics">Adding new keyword generics</a></h1>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn foo() { // maybe const context
+    let file = fs::open(&quot;hello&quot;).unwrap();
+    // compile error! =&gt; `fs::open` is not a maybe const function!
+}
+
+~base fn foo() { // assume `const` as the default; invert the relationship
+    let file = fs::open(&quot;hello&quot;).unwrap();
+    // compile error! =&gt; `fs::open` is
+    // a base function which cannot be
+    // called from a maybe base context
+}
+
+~async fn foo() {
+    let file = my_definitely_async_fn().await;
+    // compile error!
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">fn foo&lt;effect F: const&gt;(f: impl F * Fn() -&gt; ()) {
+    f();
+}
+fn foo&lt;effect F: const&gt;(f: impl effect&lt;F&gt; Fn() -&gt; ()) {
+    f();
+}
+
+// compile error!
+// effect `F` is maximally inclusive!
+// missing `.await`
+
+// maximally inclusive effects are not forward compatible! - once
+// we add a new effect existing code will not compile!
+// The calling convention may change each time we add a new effect!
+
+fn main() {
+    foo(some_fn); // Infer all effects to Not*
+}
+</code></pre></pre>
+<p>Adding new effects to the language does not break anyone, because effects must
+be opted in. Adding a new effect to the opt-in effect generics of a function
+will break callers that infer the effect to be required.</p>
+<p>Editions can add new effects to the list of defaults. This is not a breaking
+change because calling crates can stay on old editions, even if the lib crate
+got updated to a newer edition. THe lower edition crates don't see the defaults
+and turn them off.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mir-desugaring"><a class="header" href="#mir-desugaring">MIR desugaring</a></h1>
+<p><a href="https://rust-lang.zulipchat.com/#narrow/stream/146212-t-compiler.2Fconst-eval/topic/complexity.20of.20constness.20in.20the.20type.20system">Recently</a>
+I (Oli) have proposed to add a magic generic parameter on all <code>const fn foo</code>,
+<code>impl const Foo for Bar</code> and <code>const trait Foo</code> declarations. This generic
+parameter (called <code>constness</code> henceforth) is forwarded automatically to all
+items used within the body of a const fn. The following code blocks demonstrates
+the way I envision this magic generic parameter to be created (TLDR: similar to
+desugarings).</p>
+<h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
+<h4 id="trait-declarations"><a class="header" href="#trait-declarations">Trait declarations</a></h4>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const trait Foo {}
+<span class="boring">}
+</span></code></pre></pre>
+<p>becomes</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>trait Foo&lt;constness C&gt; {}
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="generic-parameters"><a class="header" href="#generic-parameters">Generic parameters</a></h4>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn foo&lt;T: Bar + ~const Foo&gt;() {}
+<span class="boring">}
+</span></code></pre></pre>
+<p>becomes</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;constness C, T: Bar + Foo&lt;C&gt;&gt;() {}
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="function-bodies"><a class="header" href="#function-bodies">Function bodies</a></h4>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn foo() {
+    bar()
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>becomes</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn foo&lt;constness C&gt;() {
+    bar::&lt;C&gt;()
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="call-sites-outside-of-const-contexts"><a class="header" href="#call-sites-outside-of-const-contexts">Call sites outside of const contexts</a></h4>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    some_const_fn();
+}
+</code></pre></pre>
+<p>becomes</p>
+<pre><pre class="playground"><code class="language-rust">fn main() {
+    some_const_fn::&lt;constness::NotConst&gt;();
+}
+</code></pre></pre>
+<h4 id="call-sites-in-const-contexts"><a class="header" href="#call-sites-in-const-contexts">Call sites in const contexts</a></h4>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const MOO: () = {
+    some_const_fn();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>becomes</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const MOO: () = {
+    some_const_fn::&lt;constness::ConstRequired&gt;();
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="implementation-side"><a class="header" href="#implementation-side">Implementation side:</a></h3>
+<p>We add a fourth kind of generic parameter: <code>constness</code>. All <code>const trait Foo</code>
+implicitly get that parameter. In rustc we remove the <code>constness</code> field from
+<code>TraitPredicate</code> and instead rely on generic parameter substitutions to replace
+constness parameters. For now such a generic parameter can either be
+<code>Constness::Required</code>, <code>Constness::Not</code> or <code>Constness::Param</code>, where only the
+latter is replaced during substitutions, the other two variants are fixed.
+Making this work as generic parameter substitution should allow us to re-use all
+the existing logic for such substitutions instead of rolling them again. I am
+aware of a significant amount of hand-waving happening here, most notably around
+where the substitutions are coming from, but I'm hoping we can hash that out in
+an explorative implementation</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="overloading-keyword-generics"><a class="header" href="#overloading-keyword-generics">Overloading Keyword Generics</a></h1>
+<p>In the previous section we saw that we cannot use <code>join</code> to await two futures
+concurrently because in &quot;base Rust&quot; we cannot run two closures concurrently. The
+capabilities introduced by the superset (async) have no counterpart in the
+subset (&quot;base Rust&quot;), and therefor we cannot write it.</p>
+<p>But sometimes we <em>do</em> want to be able to specialize implementations for a
+specific context, making use of the capabilities they provide. In order to do
+this we need to be able to declare two different code paths, and we propose
+<em>effect overloading</em> as the mechanism to do that.</p>
+<p>This problem is not limited to async Rust either; const implementations may want
+to swap to platform-specific intrinsics at runtime, but keep using portable
+instructions during CTFE. This is only a difference in implementation, and
+should not require users to switch between APIs.</p>
+<p>The way we envision <em>effect overloading</em> to work would be similar to
+specialization. A base implementation would be declared, with an overload in the
+same scope using the same signature except for the effects. The compiler would
+pick up on that, and make it work as if the type was written in a polymorphic
+fashion. Taking our earlier example, we could imagine the <code>sum</code> function could
+then be written like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Sum the output of two functions:
+default fn sum&lt;T&gt;(
+    lhs: impl FnMut() -&gt; T,
+    rhs: impl FnMut() -&gt; T
+) -&gt; T {
+   lhs() + rhs()
+}
+
+async fn sum&lt;T&gt;(
+    lhs: impl async FnMut() -&gt; T,
+    rhs: impl async FnMut() -&gt; T
+) -&gt; T {
+   let (lhs, rhs) = (lhs(), rhs()).join().await;
+   lhs + rhs
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>We expect <em>effect overloading</em> to not only be useful for performance: we suspect
+it may also be required when defining the core (async) IO types in the stdlib
+(e.g. <code>TcpStream</code>, <code>File</code>). These types carry extra fields which their base
+counterparts do not. And operations such as reading and writing to them cannot
+be written in a polymorphic fashion.</p>
+<p><strong>While we expect a majority of ecosystem and stdlib code to be written using
+<em>effect polymorphism</em>, there is a point at which implementations do need to be
+specialized, and for that we need <em>effect overloading</em>.</strong></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="-evaluation-1"><a class="header" href="#-evaluation-1">🔬 Evaluation</a></h1>
+<blockquote>
+<p>The <em>evaluation</em> surveys the various design approaches that are under consideration.
+It is not required for all initiatives, only those that begin with a problem statement
+but without a clear picture of the best solution. Often the evaluation will refer to topics
+in the <a href="evaluation/./design-discussions.html">design-discussions</a> for more detailed consideration.</p>
+</blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-rfc"><a class="header" href="#-rfc">✨ RFC</a></h1>
 <blockquote>
 <p>The RFC exists here in draft form. It will be edited and amended over the course of this initiative.
