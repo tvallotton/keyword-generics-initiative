@@ -735,11 +735,102 @@ in the <a href="evaluation/./design-discussions.html">design-discussions</a> for
 </blockquote>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-rfc"><a class="header" href="#-rfc">✨ RFC</a></h1>
 <blockquote>
-<p>The RFC exists here in draft form. It will be edited and amended over the course of this initiative.
-Note that some initiatives produce multiple RFCs.</p>
-<p>Until there is an accepted RFC, any feature gates must be labeled as experimental.</p>
 <p>When you're ready to start drafting, copy in the <a href="https://raw.githubusercontent.com/rust-lang/rfcs/master/0000-template.md">template text</a> from the <a href="https://github.com/rust-lang/rfcs">rfcs</a> repository.</p>
 </blockquote>
+<h2 id="motivation"><a class="header" href="#motivation">Motivation</a></h2>
+<p>TBD</p>
+<h2 id="design"><a class="header" href="#design">Design</a></h2>
+<h3 id="const"><a class="header" href="#const">Const</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn foo() {}
+<span class="boring">}
+</span></code></pre></pre>
+<p>desugars to</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const&lt;C&gt; fn foo() {}
+<span class="boring">}
+</span></code></pre></pre>
+<p>This means</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const fn foo&lt;T: const SomeTrait&gt;(t: T) {}
+<span class="boring">}
+</span></code></pre></pre>
+<p>desugars to this, which is just one character more:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const&lt;C&gt; fn foo&lt;T: SomeTrait * C&gt;(t: T) {}
+<span class="boring">}
+</span></code></pre></pre>
+<p>which allows you to call trait methods within the <code>const fn</code>.</p>
+<p>For the common case however, effects do not need to be named and can be referenced to by <code>_</code>:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>const&lt;_&gt; fn foo&lt;T: SomeTrait * _&gt;(t: T) {}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="async"><a class="header" href="#async">Async</a></h3>
+<p>In contrast to <code>const</code> (which is &quot;maybe&quot;-by-default) there is no
+sugared version.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async&lt;A&gt; fn foo() {}
+<span class="boring">}
+</span></code></pre></pre>
+<p>You can then pass this effect into other uses of <code>async</code> within
+the maybe-<code>async</code> function:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async&lt;A&gt; fn foo&lt;T: SomeTrait * A&gt;(t: T) {
+    t.some_method()
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>which allows you to call trait methods within the <code>~async fn</code>.</p>
+<ul>
+<li>Yosh's brain error brain worms: we shouldn't have <code>try</code> functions, we should
+have functions which use <code>throws</code>, and it specifies which error we throw.</li>
+<li>Oli: the carried error from <code>try</code> could just be inferred from the call-site.</li>
+</ul>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async&lt;E&gt; try&lt;E&gt; fn foo(t: impl SomeTrait * E, p: impl SomeTrait * E) {
+    t.some_method().await?;
+    p.some_method().await?;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>async&lt;E1&gt; try&lt;E2&gt; fn foo(t: impl SomeTrait * E1, p: impl SomeTrait * E2, q: impl SomeTrait * E1 * E2) {
+    t.some_method().await;
+    p.some_method()?;
+    q.some_method().await?;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="multiple-different-effects"><a class="header" href="#multiple-different-effects">Multiple different effects</a></h3>
+<p>We don't have a decision yet on how <code>try</code> or (<code>throws</code>) is supposed to work, which may need to provide a way to define N-copies of the same effect.
+This RFC does not address this, however it is forward compatible with adding multiple independent effects of a single keyword:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>try&lt;E1, E2&gt; fn foo(t: impl SomeTrait * E1 * E2) {
+    t.some_method()??;
+}
+<span class="boring">}
+</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-frequently-asked-questions"><a class="header" href="#-frequently-asked-questions">😕 Frequently asked questions</a></h1>
 <blockquote>
 <p>This page lists frequently asked questions about the design. It often redirects to the other pages on the site.</p>
