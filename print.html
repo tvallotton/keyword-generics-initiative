@@ -796,6 +796,37 @@ the maybe-<code>async</code> function:</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>which allows you to call trait methods within the <code>~async fn</code>.</p>
+<h3 id="combining-effects"><a class="header" href="#combining-effects">Combining effects</a></h3>
+<p>If you have both <code>async</code> and <code>const</code> modifiers, your function may not perform
+any non-const operations like accessing the file system or static items, but is
+allowed to use <code>await</code>.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Can be const, async, both or neither
+const&lt;X&gt; async&lt;X&gt; fn foo&lt;T: SomeTrait * X&gt;(t: T)
+where
+    effect X: async ^ const,
+{
+    t.bar().await
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p><code>async</code> and <code>const</code> can mutually exclusive, because <code>async</code> is useful for non-blocking IO,
+but <code>const</code> doesn't have <em>any</em> IO at all. Thus we allow declaring arbitrary <em>exclusive-or</em>
+bounds for effects.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Can be const, async, both or neither
+const&lt;X&gt; async&lt;X&gt; fn foo&lt;T: SomeTrait * X&gt;(t: T)
+where
+    effect X: async ^ const,
+{
+    t.bar().await
+}
+<span class="boring">}
+</span></code></pre></pre>
 <ul>
 <li>Yosh's brain error brain worms: we shouldn't have <code>try</code> functions, we should
 have functions which use <code>throws</code>, and it specifies which error we throw.</li>
@@ -831,6 +862,8 @@ This RFC does not address this, however it is forward compatible with adding mul
 }
 <span class="boring">}
 </span></code></pre></pre>
+<h2 id="alternatives"><a class="header" href="#alternatives">Alternatives</a></h2>
+<h2 id="future-extensions"><a class="header" href="#future-extensions">Future Extensions</a></h2>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="-frequently-asked-questions"><a class="header" href="#-frequently-asked-questions">😕 Frequently asked questions</a></h1>
 <blockquote>
 <p>This page lists frequently asked questions about the design. It often redirects to the other pages on the site.</p>
