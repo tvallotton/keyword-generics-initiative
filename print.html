@@ -176,7 +176,7 @@ about what we are trying to do, and to find out the people who are doing it,
 take a look at the <a href="./CHARTER.html">charter</a>. </p>
 <h2 id="current-status"><a class="header" href="#current-status">Current status</a></h2>
 <p>The following table lists of the stages of an initiative, along with links to the artifacts that will be produced during that stage.</p>
-<table><thead><tr><th>Stage</th><th>State</th><th>Artifact(s)</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Stage</th><th>State</th><th>Artifact(s)</th></tr></thead><tbody>
 <tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/stages/proposal.html">Proposal</a></td><td>🦀</td><td><a href="https://github.com/rust-lang/lang-team/issues/162">Proposal issue</a></td></tr>
 <tr><td></td><td></td><td><a href="./CHARTER.html">Charter</a></td></tr>
 <tr><td></td><td></td><td><a href="https://github.com/rust-lang/rust/">Tracking issue</a></td></tr>
@@ -186,6 +186,7 @@ take a look at the <a href="./CHARTER.html">charter</a>. </p>
 <tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/stages/feature-complete.html">Feature complete</a></td><td>💤</td><td>Stabilization report</td></tr>
 <tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/stages/stabilized.html">Stabilized</a></td><td>💤</td><td></td></tr>
 </tbody></table>
+</div>
 <p>Key:</p>
 <ul>
 <li>✅ -- phase complete</li>
@@ -201,7 +202,7 @@ take a look at the <a href="./CHARTER.html">charter</a>. </p>
 <li>If you are using the feature and would like to provide feedback about your experiences, please [open a &quot;experience report&quot; issue].</li>
 <li>If you are using the feature and would like to report a bug, please open a regular issue.</li>
 </ul>
-<p>We also participate on <a href="%7B%7BCHAT_LINK%7D%7D">Zulip</a>, feel free to introduce yourself over there and ask us any questions you have.</p>
+<p>We also participate on <a href="https://rust-lang.zulipchat.com/#narrow/stream/328082-t-lang.2Fkeyword-generics">Zulip</a>, feel free to introduce yourself over there and ask us any questions you have.</p>
 <h2 id="building-documentation"><a class="header" href="#building-documentation">Building Documentation</a></h2>
 <p>This repository is also an mdbook project. You can view and build it using the
 following command.</p>
@@ -291,12 +292,12 @@ to the &quot;base&quot; Rust language, which would need to be introduced in a wa
 keeps it feeling like a single language - instead of several disjoint languages
 in a trenchcoat.</p>
 <h2 id="membership"><a class="header" href="#membership">Membership</a></h2>
-<table><thead><tr><th>Role</th><th>Github</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Role</th><th>Github</th></tr></thead><tbody>
 <tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/yoshuawuyts">Yosh Wuyts</a></td></tr>
 <tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/owner.html">Owner</a></td><td><a href="https://github.com/oli-obk">Oli Scherer</a></td></tr>
 <tr><td><a href="https://lang-team.rust-lang.org/initiatives/process/roles/liaison.html">Liaison</a></td><td><a href="https://github.com/nikomatsakis">Niko Matsakis?</a></td></tr>
 </tbody></table>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="-evaluation"><a class="header" href="#-evaluation">🔬 Evaluation</a></h1>
+</div><div style="break-before: page; page-break-before: always;"></div><h1 id="-evaluation"><a class="header" href="#-evaluation">🔬 Evaluation</a></h1>
 <blockquote>
 <p>The <em>evaluation</em> surveys the various design approaches that are under consideration.
 It is not required for all initiatives, only those that begin with a problem statement
@@ -309,8 +310,7 @@ generic over effects will not be able to use all functionality of the superset
 in the subset case. Though it will need to use the <em>syntax</em> of the superset.</p>
 <p>Take for examle the following code. It takes two async closures, awaits them,
 and sums them:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Sum the output of two async functions:
 ~async fn sum&lt;T&gt;(
@@ -328,8 +328,7 @@ we might be tempted to perform the comptutation of <code>lhs</code> and <code>rh
 and summing the output once both have completed. However this should not be
 possible solely using effect polymorphism since the generated code needs to work
 in both async and non-async contexts.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Sum the output of two async functions:
 ~async fn sum&lt;T&gt;(
@@ -356,8 +355,7 @@ keywords on those, it will want to be conditional over <em>all</em> keywords on 
 generics. So in order to not have people repeat params over and over, we should
 provide shorthand syntax.</p>
 <p>Here is the &quot;base&quot; variant we're changing:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// without any effects
 fn find&lt;I&gt;(
@@ -372,8 +370,7 @@ fn find&lt;I&gt;(
 based on whether an <code>Error</code> is returned or not. We could imagine the &quot;base&quot;
 version using a <code>TryTrait</code> notation, and the &quot;effect&quot; version using the <code>throws</code>
 keyword. Both variants would look something like this:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// fallible without effect notation
 fn try_find&lt;I, E&gt;(
@@ -394,8 +391,7 @@ fn try_find&lt;I, E&gt;(
 </span></code></pre></pre>
 <p>For <code>async</code> we could do something similar. The &quot;base&quot; version would use
 <code>AsyncTrait</code> variants. And the &quot;effect&quot; variant would use the <code>async</code> keyword:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// async without effect notation
 fn async_find&lt;I&gt;(
@@ -417,8 +413,7 @@ fn async_find&lt;I&gt;(
 <p>Both the &quot;fallible&quot; and &quot;async&quot; variants mirror each other closely. And it's
 easy to imagine we'd want to be conditional over both. However, if neither the
 &quot;base&quot; or the &quot;effect&quot; variants are particularly pleasant.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// async + fallible without effect notation
 fn try_async_find&lt;I, E&gt;(
@@ -446,8 +441,7 @@ like with three or four? Yikes.</p>
 discussed earlier, in order to lower effects we already need a new type of
 generic at the MIR layer. But what if we exposed that type of generics as user
 syntax too? We could imagine it to look something like this:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// conditional
 fn any_find&lt;I, effect F&gt;(
@@ -475,8 +469,7 @@ signature (e.g. adding <code>.await</code> or <code>?</code>, etc.) can be part 
 inclusive: it would capture all effects. Should we be able to place restrictions
 on this effect, and if so what should that look like?</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="adding-new-keyword-generics"><a class="header" href="#adding-new-keyword-generics">Adding new keyword generics</a></h1>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const fn foo() { // maybe const context
     let file = fs::open(&quot;hello&quot;).unwrap();
@@ -532,36 +525,31 @@ the way I envision this magic generic parameter to be created (TLDR: similar to
 desugarings).</p>
 <h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
 <h4 id="trait-declarations"><a class="header" href="#trait-declarations">Trait declarations</a></h4>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const trait Foo {}
 <span class="boring">}
 </span></code></pre></pre>
 <p>becomes</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>trait Foo&lt;constness C&gt; {}
 <span class="boring">}
 </span></code></pre></pre>
 <h4 id="generic-parameters"><a class="header" href="#generic-parameters">Generic parameters</a></h4>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const fn foo&lt;T: Bar + ~const Foo&gt;() {}
 <span class="boring">}
 </span></code></pre></pre>
 <p>becomes</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn foo&lt;constness C, T: Bar + Foo&lt;C&gt;&gt;() {}
 <span class="boring">}
 </span></code></pre></pre>
 <h4 id="function-bodies"><a class="header" href="#function-bodies">Function bodies</a></h4>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const fn foo() {
     bar()
@@ -569,8 +557,7 @@ desugarings).</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>becomes</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn foo&lt;constness C&gt;() {
     bar::&lt;C&gt;()
@@ -588,8 +575,7 @@ desugarings).</p>
 }
 </code></pre></pre>
 <h4 id="call-sites-in-const-contexts"><a class="header" href="#call-sites-in-const-contexts">Call sites in const contexts</a></h4>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const MOO: () = {
     some_const_fn();
@@ -597,8 +583,7 @@ desugarings).</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>becomes</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const MOO: () = {
     some_const_fn::&lt;constness::ConstRequired&gt;();
@@ -636,8 +621,7 @@ same scope using the same signature except for the effects. The compiler would
 pick up on that, and make it work as if the type was written in a polymorphic
 fashion. Taking our earlier example, we could imagine the <code>sum</code> function could
 then be written like this:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Sum the output of two functions:
 default fn sum&lt;T&gt;(
@@ -741,37 +725,32 @@ in the <a href="evaluation/./design-discussions.html">design-discussions</a> for
 <p>TBD</p>
 <h2 id="design"><a class="header" href="#design">Design</a></h2>
 <h3 id="const"><a class="header" href="#const">Const</a></h3>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const fn foo() {}
 <span class="boring">}
 </span></code></pre></pre>
 <p>desugars to</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const&lt;C&gt; fn foo() {}
 <span class="boring">}
 </span></code></pre></pre>
 <p>This means</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const fn foo&lt;T: const SomeTrait&gt;(t: T) {}
 <span class="boring">}
 </span></code></pre></pre>
 <p>desugars to this, which is just one character more:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const&lt;C&gt; fn foo&lt;T: SomeTrait * C&gt;(t: T) {}
 <span class="boring">}
 </span></code></pre></pre>
 <p>which allows you to call trait methods within the <code>const fn</code>.</p>
 <p>For the common case however, effects do not need to be named and can be referenced to by <code>_</code>:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const&lt;_&gt; fn foo&lt;T: SomeTrait * _&gt;(t: T) {}
 <span class="boring">}
@@ -779,16 +758,14 @@ in the <a href="evaluation/./design-discussions.html">design-discussions</a> for
 <h3 id="async"><a class="header" href="#async">Async</a></h3>
 <p>In contrast to <code>const</code> (which is &quot;maybe&quot;-by-default) there is no
 sugared version.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>async&lt;A&gt; fn foo() {}
 <span class="boring">}
 </span></code></pre></pre>
 <p>You can then pass this effect into other uses of <code>async</code> within
 the maybe-<code>async</code> function:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>async&lt;A&gt; fn foo&lt;T: SomeTrait * A&gt;(t: T) {
     t.some_method()
@@ -800,8 +777,7 @@ the maybe-<code>async</code> function:</p>
 <p>If you have both <code>async</code> and <code>const</code> modifiers, your function may not perform
 any non-const operations like accessing the file system or static items, but is
 allowed to use <code>await</code>.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Can be const, async, both or neither
 const&lt;X&gt; async&lt;X&gt; fn foo&lt;T: SomeTrait * X&gt;(t: T)
@@ -815,8 +791,7 @@ where
 <p><code>async</code> and <code>const</code> can mutually exclusive, because <code>async</code> is useful for non-blocking IO,
 but <code>const</code> doesn't have <em>any</em> IO at all. Thus we allow declaring arbitrary <em>exclusive-or</em>
 bounds for effects.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Can be const, async, both or neither
 const&lt;X&gt; async&lt;X&gt; fn foo&lt;T: SomeTrait * X&gt;(t: T)
@@ -832,8 +807,7 @@ where
 have functions which use <code>throws</code>, and it specifies which error we throw.</li>
 <li>Oli: the carried error from <code>try</code> could just be inferred from the call-site.</li>
 </ul>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>async&lt;E&gt; try&lt;E&gt; fn foo(t: impl SomeTrait * E, p: impl SomeTrait * E) {
     t.some_method().await?;
@@ -841,8 +815,7 @@ have functions which use <code>throws</code>, and it specifies which error we th
 }
 <span class="boring">}
 </span></code></pre></pre>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>async&lt;E1&gt; try&lt;E2&gt; fn foo(t: impl SomeTrait * E1, p: impl SomeTrait * E2, q: impl SomeTrait * E1 * E2) {
     t.some_method().await;
@@ -856,8 +829,7 @@ have functions which use <code>throws</code>, and it specifies which error we th
 breaking any existing code. Right now we're already adding constness to many functions in the standard library.</p>
 <p>Take for example the method <code>Option::map</code>. This method takes a closure <code>f</code>. If we want to make this method <code>const</code> the closure must be <code>const</code> as well. This means the constness of the method and the constness of the input types are <em>linked</em>.</p>
 <p>Before constification, <code>Option::map</code> looked like this:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl&lt;T&gt; Option&lt;T&gt; {
     fn map&lt;U&gt;(self, f: impl FnOnce(T) -&gt; U) -&gt; Option&lt;U&gt; {
@@ -871,8 +843,7 @@ breaking any existing code. Right now we're already adding constness to many fun
 </span></code></pre></pre>
 <p>We might be tempted to make the function &quot;maybe-const&quot; by adding a <code>const</code>
 keyword-generic to the function:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl&lt;T&gt; Option&lt;T&gt; {
     const&lt;C&gt; fn map&lt;U&gt;(self, f: impl FnOnce(T) -&gt; U) -&gt; Option&lt;U&gt; {
@@ -941,8 +912,7 @@ implements <code>FnOnce</code>, irrespective of its constness.</p>
 <p>If <code>Option::map</code> is called from another <code>const fn</code> or from within a true <code>const</code>
 context (like a const item's initializer), then the <code>C</code> is either &quot;maybe const&quot; or &quot;definitely const&quot;,
 but either way, only types that implement <code>const FnOnce</code> are allowed for <code>f</code>.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>impl&lt;T&gt; Option&lt;T&gt; {
     const&lt;C&gt; fn map&lt;U&gt;(self, f: impl FnOnce(T) -&gt; U * C) -&gt; Option&lt;U&gt; {
@@ -958,8 +928,7 @@ but either way, only types that implement <code>const FnOnce</code> are allowed 
 <h3 id="multiple-different-effects"><a class="header" href="#multiple-different-effects">Multiple different effects</a></h3>
 <p>We don't have a decision yet on how <code>try</code> or (<code>throws</code>) is supposed to work, which may need to provide a way to define N-copies of the same effect.
 This RFC does not address this, however it is forward compatible with adding multiple independent effects of a single keyword:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>try&lt;E1, E2&gt; fn foo(t: impl SomeTrait * E1 * E2) {
     t.some_method()??;

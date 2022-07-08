@@ -159,8 +159,7 @@ same scope using the same signature except for the effects. The compiler would
 pick up on that, and make it work as if the type was written in a polymorphic
 fashion. Taking our earlier example, we could imagine the <code>sum</code> function could
 then be written like this:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Sum the output of two functions:
 default fn sum&lt;T&gt;(

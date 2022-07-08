@@ -150,36 +150,31 @@ the way I envision this magic generic parameter to be created (TLDR: similar to
 desugarings).</p>
 <h3 id="examples"><a class="header" href="#examples">Examples</a></h3>
 <h4 id="trait-declarations"><a class="header" href="#trait-declarations">Trait declarations</a></h4>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const trait Foo {}
 <span class="boring">}
 </span></code></pre></pre>
 <p>becomes</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>trait Foo&lt;constness C&gt; {}
 <span class="boring">}
 </span></code></pre></pre>
 <h4 id="generic-parameters"><a class="header" href="#generic-parameters">Generic parameters</a></h4>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const fn foo&lt;T: Bar + ~const Foo&gt;() {}
 <span class="boring">}
 </span></code></pre></pre>
 <p>becomes</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn foo&lt;constness C, T: Bar + Foo&lt;C&gt;&gt;() {}
 <span class="boring">}
 </span></code></pre></pre>
 <h4 id="function-bodies"><a class="header" href="#function-bodies">Function bodies</a></h4>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const fn foo() {
     bar()
@@ -187,8 +182,7 @@ desugarings).</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>becomes</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>fn foo&lt;constness C&gt;() {
     bar::&lt;C&gt;()
@@ -206,8 +200,7 @@ desugarings).</p>
 }
 </code></pre></pre>
 <h4 id="call-sites-in-const-contexts"><a class="header" href="#call-sites-in-const-contexts">Call sites in const contexts</a></h4>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const MOO: () = {
     some_const_fn();
@@ -215,8 +208,7 @@ desugarings).</p>
 <span class="boring">}
 </span></code></pre></pre>
 <p>becomes</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>const MOO: () = {
     some_const_fn::&lt;constness::ConstRequired&gt;();

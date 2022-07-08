@@ -146,8 +146,7 @@ generic over effects will not be able to use all functionality of the superset
 in the subset case. Though it will need to use the <em>syntax</em> of the superset.</p>
 <p>Take for examle the following code. It takes two async closures, awaits them,
 and sums them:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Sum the output of two async functions:
 ~async fn sum&lt;T&gt;(
@@ -165,8 +164,7 @@ we might be tempted to perform the comptutation of <code>lhs</code> and <code>rh
 and summing the output once both have completed. However this should not be
 possible solely using effect polymorphism since the generated code needs to work
 in both async and non-async contexts.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// Sum the output of two async functions:
 ~async fn sum&lt;T&gt;(

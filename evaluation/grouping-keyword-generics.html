@@ -146,8 +146,7 @@ keywords on those, it will want to be conditional over <em>all</em> keywords on 
 generics. So in order to not have people repeat params over and over, we should
 provide shorthand syntax.</p>
 <p>Here is the &quot;base&quot; variant we're changing:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// without any effects
 fn find&lt;I&gt;(
@@ -162,8 +161,7 @@ fn find&lt;I&gt;(
 based on whether an <code>Error</code> is returned or not. We could imagine the &quot;base&quot;
 version using a <code>TryTrait</code> notation, and the &quot;effect&quot; version using the <code>throws</code>
 keyword. Both variants would look something like this:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// fallible without effect notation
 fn try_find&lt;I, E&gt;(
@@ -184,8 +182,7 @@ fn try_find&lt;I, E&gt;(
 </span></code></pre></pre>
 <p>For <code>async</code> we could do something similar. The &quot;base&quot; version would use
 <code>AsyncTrait</code> variants. And the &quot;effect&quot; variant would use the <code>async</code> keyword:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// async without effect notation
 fn async_find&lt;I&gt;(
@@ -207,8 +204,7 @@ fn async_find&lt;I&gt;(
 <p>Both the &quot;fallible&quot; and &quot;async&quot; variants mirror each other closely. And it's
 easy to imagine we'd want to be conditional over both. However, if neither the
 &quot;base&quot; or the &quot;effect&quot; variants are particularly pleasant.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// async + fallible without effect notation
 fn try_async_find&lt;I, E&gt;(
@@ -236,8 +232,7 @@ like with three or four? Yikes.</p>
 discussed earlier, in order to lower effects we already need a new type of
 generic at the MIR layer. But what if we exposed that type of generics as user
 syntax too? We could imagine it to look something like this:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>// conditional
 fn any_find&lt;I, effect F&gt;(
